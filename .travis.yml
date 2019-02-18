@@ -16,7 +16,7 @@ matrix:
   fast_finish: true
 
 install:
-  - pwsh -Command 'Install-Module -Force -SkipPublisherCheck -Scope CurrentUser -Name Pester'
+  - make init
 
 script:
-  - bin/run-tests.sh
+  - make test
