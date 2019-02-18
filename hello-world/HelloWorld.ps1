@@ -1,3 +1,4 @@
-function HelloWorld {
-	return "Hello World!"
+function Get-HelloWorld {
+	param([string]$person = "World")
+	return "Hello, $person!"
 }

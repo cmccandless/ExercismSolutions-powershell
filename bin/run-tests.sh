@@ -3,11 +3,12 @@
 failed=0
 for exercise_directory in $(find ./* -type d); do
     tmpdir=$(mktemp -d)
-    test_file=$(find "$exercise_directory" -type f -name '*.tests.ps1')
+    test_file="$(find "$exercise_directory" -type f -name '*.tests.ps1')"
     if [ -f "$test_file" ]; then
-        solution_file=$(find "$exercise_directory" -type f -name '*.example.ps1')
-        cp $(printf "%s" "$test_file") "$tmpdir"
-        cp $(printf "%s" "$solution_file") "$tmpdir/$(basename "${test_file//.tests}")"
+        solution_file="$(find "$exercise_directory" -type f -name '*.ps1' | grep -v tests)"
+        echo "$solution_file"
+        cp "$test_file" "$tmpdir"
+        cp "$solution_file" "$tmpdir/$(basename "$solution_file")"
         results="$(pwsh -WorkingDirectory "$tmpdir" -Command 'Invoke-Pester' | tee /dev/tty)"
         rm -rf "$tmpdir"
         failures="$(grep -oP '(?<=Failed: )[[:digit:]]+' <<< "$results")"
